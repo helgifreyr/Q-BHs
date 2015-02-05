@@ -22,3 +22,4 @@ cp *dat m=$1/alpha=$4/w=$2/$5/rh=$3/
 # useful stuff for later
 # folders = (*/)
 # last_folder = $folders(*/)[-1]
+# test test test
