@@ -1,18 +1,16 @@
 (* ::Package:: *)
 
-(* 27.01.15 *)
+(* 8 Martie 14 *)
+
+
+ (*<<NumericalMath`ListIntegrate` *)
 
 
 Off[SetDelayed::"write"]
 <<NumericalMath`ListIntegrate`
 
 
-
-
-
-
- 
-Directory[]
+(* *)
 
 
 Off[General::spell1]
@@ -97,6 +95,9 @@ sa3=nx-1;
 
 
 Print["rmax = ",gr[[nx]][[1]]];
+
+
+listar
 
 
 minF0=Min[F0] 
@@ -224,18 +225,18 @@ t3=Table[{ listar[[i]] ,Wu[as3][[i]]},{i,1,lgr-cut}];;
 
 
 
-cut1=42;
+cut1= 2;
 
-t1=Table[ {listar[[i]] ,Wu[as1][[i]] listar[[i]]},{i,1,lgr-cut1}];
-t2=Table[{ listar[[i]]  ,Wu[as2][[i]] listar[[i]]},{i,1,lgr-cut1}];
-t3=Table[{ listar[[i]] ,Wu[as3][[i]] listar[[i]]},{i,1,lgr-cut1}];;
-
-
+t1=Table[ {listar[[i]] ,Wu[as1][[i]] listar[[i]]^1},{i,1,lgr-cut1}];
+t2=Table[{ listar[[i]]  ,Wu[as2][[i]] listar[[i]]^1},{i,1,lgr-cut1}];
+t3=Table[{ listar[[i]] ,Wu[as3][[i]] listar[[i]]^1},{i,1,lgr-cut1}];;
 
 
-nr=170;
-t1=Table[ {listar[[i]] ,-Zu[as3][[i]]},{i,2,nr}];
-t2=Table[{ listar[[i]]  ,F0u[as3][[i]]},{i,2,nr}]; 
+
+
+nr1=170;
+t1=Table[ {listar[[i]] ,-Zu[as3][[i]]},{i,2,nr1}];
+t2=Table[{ listar[[i]]  ,F0u[as3][[i]]},{i,2,nr1}]; 
 
 
 
@@ -282,9 +283,9 @@ Print[" FUNCTION F21(theta)"]
  
 
 
- t1=Table[{listar[[i]], listar[[i]]^3 (Wu[as1][[i]] ) },{i,ni,lgr-cut}];
-t2=Table[{listar[[i]], listar[[i]]^3 (Wu[as2][[i]]  ) },{i,ni,lgr-cut}];
-t3=Table[{listar[[i]], listar[[i]]^3 (Wu[as3][[i]]   )},{i,ni,lgr-cut}];
+ t1=Table[{listar[[i]], listar[[i]]^1 (Wu[as1][[i]] ) },{i,ni,lgr-cut}];
+t2=Table[{listar[[i]], listar[[i]]^1 (Wu[as2][[i]]  ) },{i,ni,lgr-cut}];
+t3=Table[{listar[[i]], listar[[i]]^1 (Wu[as3][[i]]   )},{i,ni,lgr-cut}];
 
 
 
@@ -297,7 +298,7 @@ ti=Table[{i, listar[[nf]] (F0u[i][[nf]] ) },{i,1,ny}]
 
 
 nf=nx- cut;
-ti=Table[{i, listar[[nf]]^3 (Wu[i][[nf]] ) },{i,1,ny}]
+ti=Table[{i, listar[[nf]]^1 (Wu[i][[nf]] ) },{i,1,ny}]
 
 
 ct=1;
@@ -321,8 +322,8 @@ u=Fit[data,{1/x ,1/x^2     } ,x];
 cf21[k ]=Coefficient[u,1/x];
 
  data=Table[{listar[[i]] ,Wu[k][[i]]   },{i,nx-ini,nx-cut}];
-u=Fit[data,{ 1/x^3,1/x^4     } ,x];
-cW[k ]=Coefficient[u,1/x^3];
+u=Fit[data,{ 1/x ,1/x^2     } ,x];
+cW[k ]=Coefficient[u,1/x];
 
 ,{k,1,ny }]
 
@@ -366,7 +367,7 @@ dat=ReadList["fx-inf.txt",{Number,Number ,Number ,Number,Number ,Number  }];
 lung1=Length[dat] ;
 
 r=Table[dat[[i]][[1]],{i,1,lung1}];
-infF1=Table[dat[[i]][[2]],{i,1,lung1}];
+infF1=Table[dat[[i]][[2]],{i,1,lung1}]
 infF2=Table[dat[[i]][[3]],{i,1,lung1}];
 infF0=Table[dat[[i]][[4]],{i,1,lung1}]
 infZ=Table[dat[[i]][[5]],{i,1,lung1}];
@@ -394,14 +395,26 @@ computation Mass from asymptotics
 (* th result:*) 
 (*
 Series[-g[4,4],{r,Infinity,1}]
-1+(2 const-rh)/r+O[1/r]^2
+1+(2 const-rh)/r+O[1/r]^2: non-extremal
+
+Series[gtt,{r,Infinity,1}]
+-1+(-2 ct+2 rh)/r+O[1/r]^2: extremal
 *)
+(* atentie!! la extremal este diferit! *)
+
 
 const=Sum[f01[[i]],{i,1,ny}]/ny;
 
 Mc=  constINF;
 
+(* non-extremal:
+Mc=  constINF;
 MSch=rh/2 ;
+Mass=MSch+Mc;
+*)
+
+
+MSch=rh ;
 Mass=MSch+Mc;
 
 Print["Mass Schw     = ",MSch];
@@ -451,24 +464,8 @@ unghi=Table[dat[[i]][[1]],{i,1,lung1}];
 hF1=Table[dat[[i]][[2]],{i,1,lung1}]; 
 hF2=Table[dat[[i]][[3]],{i,1,lung1}]; 
 hF0=Table[dat[[i]][[4]],{i,1,lung1}]; 
-hZ=Table[dat[[i]][[5]],{i,1,lung1}]; 
-hW=Table[dat[[i]][[6]],{i,1,lung1}]; 
-
-
-(*%%%%%%% Hawking temperature %%%%%%%%*)
-TH0=1/(4 Pi rh) ;
-
-THc=  1/lung1 Sum[ E^( (hF0[[i]]-hF1[[i]])),{i,1,lung1}];(* correction due to the scalar field*)
-TH=TH0 THc;
-Print["Schw temp. TH0= ",TH0]
-Print["correction THc= ",THc]
-Print["TH= ",TH]
-
-
-errTH=1-Abs[Min[hF0-hF1] /Max[hF0-hF1]];
-Print["error TH= ",errTH//N]
-
-
+hZ=Table[dat[[i]][[5]],{i,1,lung1}]
+ 
 
 
 
@@ -482,7 +479,8 @@ Print["error TH= ",errTH//N]
 
 (*%%%%%%% event horizon area %%%%%%%%*)
 AH0=4 Pi rh^2;
- iAHc=Table[{unghi[[k]],1/2  Sin[unghi[[k]]] E^((hF1[[k]] +hF2[[k]] )) },{k,1,lung1 }];
+
+iAHc=Table[{unghi[[k]],1/2  Sin[unghi[[k]]] E^((hF1[[k]] +hF2[[k]] )) },{k,1,lung1 }];
 
 (* 2 because I integrate between 0, Pi/2 *)
  AHc= 2Integrate[Interpolation[iAHc,InterpolationOrder->1][x],{x,0,Pi/2}];
@@ -492,6 +490,10 @@ AH=AH0 AHc;
 Print["Schw area  AH0= ",AH0];
 Print["correction AHc= ",AHc];
 Print["Event horizon area =",AH];
+
+
+
+
 
 
 
@@ -512,6 +514,12 @@ Print["Lp = ",Lp ];
 Print["  " ];
 
 
+
+
+
+
+
+
 (* computation MASS from the energy momentum tensor - Smarr relation *)
 
 asa1=2;
@@ -519,7 +527,7 @@ asa2=IntegerPart[ny/2];
 asa3=ny-1;
 
 
- (* ordinea este: { eq11,T44,Ttot}  *)
+ (* ordinea este: { T34,T44,Ttot }  *)
 q=ReadList["T44.dat",{Number,Number,Number }];
 lungq=Length[q];
 
@@ -535,19 +543,33 @@ ro=Table[q[[k]][[2]],{k,1,lungq}];
 (*foarte util in reprezentari grafice *)
 
 Do[ 
-T34u[k]=Table[T34[[i]],{i,(k-1)*nx+1,k*nx}]; 
+ 
+(* T34u[k]=Table[T34[[i]],{i,(k-1)*nx+1,k*nx}]; *)
 rou[k]=Table[ro[[i]],{i,(k-1)*nx+1,k*nx}]; 
 Ttotu[k]=Table[Ttot[[i]],{i,(k-1)*nx+1,k*nx}]; 
 (*	Print[T44u[k]];*)
 ,{k,1,ny}]
 
+
+(* I redefine the angular momentum density *)
+eps1=0.0001;
+
+Do[ 
+(* H[r_]:=rh+Sqrt[rh^2+r^2];*)
+(* generic expression theory: T34u[k]=-((2 E^(-2 F0[r,t]) nr H[r]^2 (w g[r]+nr W1[r,t]) Z[r,t]^2)/r^4);*)
+  T34u[k]=Table[-(2 E^(-2F0u[k][[i]]) nr (rh+Sqrt[rh^2+listar[[i]]^2])^2 ( w (listar[[i]]^2+rh^2)+nr Wu[k][[i]]) Zu[k][[i]]^2)/(listar[[i]]+eps1)^4,{i,1,nx}];
  
+ (*	Print[T44u[k]];*)
+,{k,1,ny}]
+
+
+
 (*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  now I plot the energy density for three different angles
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*)
 
 ni=2;
-cut=43;
+cut=143;
 
 t1=Table[{listar[[i]],-rou[asa1][[i]] },{i,ni,nx-cut}];
 t2=Table[{listar[[i]],-rou[asa2][[i]] },{i,ni,nx-cut}];
@@ -556,6 +578,30 @@ t3=Table[{listar[[i]],-rou[asa3][[i]] },{i,ni,nx-cut}];
 (* Print["black: theta=0 "];*)
 
  Print["profiles energy density"];
+
+
+t1=Table[{i,-rou[as1][[i]] },{i,1,lgr}];
+t2=Table[{i,-rou[as2][[i]] },{i,1,lgr}];
+t3=Table[{i,-rou[as3][[i]] },{i,1,lgr}];
+
+
+
+Print[" energy density"]
+
+t1=Table[ {listar[[i]] ,-rou[as1][[i]]},{i,1,lgr-cut}];
+t2=Table[{ listar[[i]]  ,-rou[as2][[i]]},{i,1,lgr-cut}];
+t3=Table[{ listar[[i]] ,-rou[as3][[i]]},{i,1,lgr-cut}];;
+
+
+ 
+
+
+ni
+
+
+
+cut=115;
+
 
 (*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  now I plot the constraint T34 for three different angles
@@ -569,6 +615,9 @@ t3=Table[{listar[[i]],T34u[asa3][[i]] },{i,ni,nx-cut}];
  Print["profiles T34"];
 
 
+
+
+
 (*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  now I compute the scalar field contribution to the total mass
 & Smarr law
@@ -578,9 +627,6 @@ t3=Table[{listar[[i]],T34u[asa3][[i]] },{i,ni,nx-cut}];
 (*Se construiesc ny liste pt. integralele marimilor de interes la unghiuri fixate *)
 
 Do[
-
- Mio1[k]=Table[{listar[[i]], E^(F0u[k][[i]]+2 F1u[k][[i]]+F2u[k][[i]])  listar[[i]]  Sqrt[listar[[i]]^2+rh^2]  rou[k][[i]]},{i,ni,nx-1}];
-
 
  Mio2[k]=Table[{listar[[i]], E^(F0u[k][[i]]+2 F1u[k][[i]]+F2u[k][[i]])  listar[[i]]  Sqrt[listar[[i]]^2+rh^2]  Ttotu[k][[i]]},{i,ni,nx-1}];
 
@@ -592,22 +638,17 @@ Do[
 
 (*Se construiesc ny liste pt. integralele marimilor de interes la unghiuri fixate *)
 Do[
-Ma1[k]=ListIntegrate[Mio1[k],2]//N;
 Ma2[k]=ListIntegrate[Mio2[k],2]//N;
 Ma3[k]=ListIntegrate[Mio3[k],2]//N;
  ,{k,2,ny-1}];
 
-Ma1[1]=Ma1[2];
-Ma1[ny]=Ma1[ny-1];
  
-
 Ma2[1]=Ma2[2];
 Ma2[ny]=Ma2[ny-1];
  
 Ma3[1]=Ma3[2];
 Ma3[ny]=Ma3[ny-1];
 
- Minn1=Table[{unghi[[k]], Sin[unghi[[k]]] Ma1[k]},{k,1,ny}];
  Minn2=Table[{unghi[[k]], Sin[unghi[[k]]] Ma2[k]},{k,1,ny}];
   Minn3=Table[{unghi[[k]], Sin[unghi[[k]]] Ma3[k]},{k,1,ny}];
 
@@ -626,31 +667,32 @@ MSch-2 TH0 1/4 AH0
  *)
 
 Print["total mass     = ",Mass];
+Print["total J     = ",1/2 constJINF ];
 Print["mass integral  = ",-Mint 1/2 2alfa^2];
+Print["J integral  = ",Jint];
+Print["AH    = ",  AH];
 Print["factor TH S    = ",2 TH 1/4 AH];
-Print["factor OmegaHJ = ",2  w   (1/2 constJINF -Jint alfa^2)];
+Print["factor OmegaHJ = ",2  w   (1/2 constJINF -Jint)];
 
 Print[" "];
 
 (* smarr relation *)
-errSmarr=1-(Mass-2 TH 1/4 AH+2  w   (1/2 constJINF -Jint alfa^2) )/(-Mint 1/2 2alfa^2);
+errSmarr=1-(Mass +2  w   (1/2 constJINF -Jint) )/(-Mint 1/2 2alfa^2);
 Print[" errSmarr= ",errSmarr]; 
+
+
+
+
 
 
 (* difference mass computed at infinity/mass interpolated *)
 1-Abs[const/constINF] 
 
 
-Mass
 
 
 
-
-
-asa= Table[{rh,alfa,c1,c2,c3,Jint,TH,Mass,AH,err1,minF0,f0H,f1H,f2H,ZH,Mint,Le,Lp,w,constJINF,maxF0,minF1,maxF1,minF2,maxF2,minW,maxW,minZ,maxZ,errSmarr}] 
-
-
-
+asa= Table[{rh,alfa,c1,c2,c3,Jint,0,Mass,AH,err1,minF0,f0H,f1H,f2H,ZH,Mint,Le,Lp,w,constJINF,maxF0,minF1,maxF1,minF2,maxF2,minW,maxW,minZ,maxZ,errSmarr }] 
 
 
 
@@ -658,7 +700,5 @@ asa= Table[{rh,alfa,c1,c2,c3,Jint,TH,Mass,AH,err1,minF0,f0H,f1H,f2H,ZH,Mint,Le,L
 
 stmp=OpenAppend["tmp.txt"];
 Write[stmp,asa];
-Close[stmp] ; 
- 
- 
+Close[stmp] ;
  

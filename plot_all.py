@@ -5,12 +5,12 @@ import grapefruit
 
 rc('font', family='serif', size=8)
 
-def plot_gogn(r,g,b):
-    gogn = get_data('1.0','*','*','*')
-    B_gogn_1st = get_Bstar_data('1.0','*','1st')
-    B_gogn_2nd = get_Bstar_data('1.0','*','2nd')
-    e_gogn_1st = get_extremal_data('1.0','*','1st','*')
-    e_gogn_2nd = get_extremal_data('1.0','*','2nd','*')
+def plot_gogn(alpha,r,g,b):
+    gogn = get_data('1.0',alpha,'*','*','*')
+    B_gogn_1st = get_Bstar_data('1.0',alpha,'*','1st')
+    B_gogn_2nd = get_Bstar_data('1.0',alpha,'*','2nd')
+    e_gogn_1st = get_extremal_data('1.0',alpha,'*','1st','*')
+    e_gogn_2nd = get_extremal_data('1.0',alpha,'*','2nd','*')
     ws = gogn[:,18]/sqrt(1.1)
     Ms = gogn[:,7]*sqrt(1.1)
     e_ws_1st = e_gogn_1st[:,18]/sqrt(1.1)
@@ -32,7 +32,7 @@ def plot_gogn(r,g,b):
     plot(e_ws,e_Ms,'-',c=colE.html,ms=1.5,label=r'eQ-BHs')
     plot(B_ws,B_Ms,'-',c=colB.html,ms=2.5,label=r'Q-balls')
 
-plot_gogn(1,0,0)
+plot_gogn(sys.argv[1],1,0,0)
 
 
 xlabel(r'$w$')
@@ -52,8 +52,8 @@ plot(W,M(W),'k')
 legend(loc='upper center', bbox_to_anchor=(0.5, 1.05),ncol=3,fancybox=True,shadow=True)
 
 # inset figure
-a = axes([0.2, 0.2, .4, .4])#, axisbg='y')
-plot_gogn(1,0,0)
+a = axes([0.2, 0.2, .2, .2])#, axisbg='y')
+plot_gogn(sys.argv[1],1,0,0)
 curve = genfromtxt('zero-mode')
 curve_w = curve[:,0]
 curve_M = curve[:,1]
@@ -67,4 +67,4 @@ M = lambda w: 1/(2*w)
 plot(W,M(W),'k')
 setp(a, xlim=(0.94,0.96),ylim=(0.4,0.7))#, xticks=[], yticks=[])
 
-savefig('w-vs-M-Q.png')
+savefig('w-vs-M-Q-alpha='+sys.argv[1]+'.png')

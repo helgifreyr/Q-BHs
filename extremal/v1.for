@@ -99,6 +99,7 @@ c	    w= 0.95d0
             Read(1,789)nr
             Read(1,789)w
             Read(1,789)rh
+            Read(1,789)alpha
           Close(Unit=1)
 
 c      * coefficient Z^6
@@ -111,7 +112,7 @@ c      * coefficient Z^2
           c3=1.1d0
  
   
-	alpha=1.d0
+c	alpha=1.d0
  
                methoda = 2
                 maxiti =    42520  

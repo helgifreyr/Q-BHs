@@ -12,9 +12,9 @@ echo "$3" >> parameters
 echo "$4" >> parameters
 for i in `seq 1 $6`;
 do
-  ./eQ-BHs | tee output.txt
+  ./Q-BHs | tee output.txt
 done    
-math -script extract-data-Q-extremal.m | tee math-output.txt
+math -script extract-data-Q-HBHs.m | tee math-output.txt
 mkdir -p m=$1/alpha=$4/w=$2/$5/rh=$3/
 mv *txt m=$1/alpha=$4/w=$2/$5/rh=$3/
 cp *dat m=$1/alpha=$4/w=$2/$5/rh=$3/
